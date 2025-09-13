@@ -1,0 +1,91 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" version="28.2.1">
+  <diagram name="Página-1" id="9wilKiSANVnzECLPmgjO">
+    <mxGraphModel dx="1723" dy="950" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-31" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="190" y="90" width="1240" height="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-2" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Administrador&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;(persona)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(255, 255, 255), rgb(237, 237, 237));&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Gestionar solicitudes, programa trabajos, solicita financiamiento&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="shape=actor;whiteSpace=wrap;html=1;fillColor=light-dark(#3b699b, #ededed);strokeColor=#6C8EBF;fontColor=light-dark(#FFFFFF,#EDEDED);fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="630" y="160" width="216" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-4" value="&lt;h1&gt;&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sistema de Gestión de Mantenimiento Urbano&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Descripción: Sistema para registrar, gestionar y dar&lt;br&gt;seguimiento a solicitudes de mantenimiento de infraestructura urbana&lt;/font&gt;&lt;/p&gt;&lt;/h1&gt;" style="rounded=1;whiteSpace=wrap;html=1;gradientColor=none;shadow=1;glass=0;strokeColor=light-dark(#ffffff, #ededed);gradientDirection=north;align=center;fillColor=light-dark(#bdbcbc, #ededed);opacity=80;" parent="1" vertex="1">
+          <mxGeometry x="580" y="560" width="390" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-5" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;box-sizing: border-box; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; text-align: left;&quot;&gt;&lt;font style=&quot;&quot;&gt;Sistema de Participación Ciudadana&lt;/font&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;(software system)&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&amp;nbsp;Sistema que recibe reportes de ciudadanos y&lt;br&gt;envía solicitudes.&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 15px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;Envía solicitudes de mantenimiento → Recibe&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;actualizaciones de estado&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=light-dark(#ffffff, #c98531);fillColor=#fad7ac;" parent="1" vertex="1">
+          <mxGeometry x="430" y="890" width="320" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-7" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Sistema de Finanzas&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;(software system)&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Sistema que gestiona el presupuesto municipal.&lt;/font&gt;&lt;/p&gt;&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Recibe solicitudes de financiamiento → Envía confirmaciones&lt;br&gt;(aprobado/rechazado)&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=light-dark(#ffffff, #c98531);" parent="1" vertex="1">
+          <mxGeometry x="870" y="890" width="330" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.408;entryY=-0.001;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="NI3BNErvRWoYPgV2M6HP-2" target="NI3BNErvRWoYPgV2M6HP-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="540" as="sourcePoint" />
+            <mxPoint x="860" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-11" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Gestionar Solicitudes&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="NI3BNErvRWoYPgV2M6HP-10" connectable="0" vertex="1">
+          <mxGeometry x="-0.0578" y="1" relative="1" as="geometry">
+            <mxPoint y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-13" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.29;exitY=1.009;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.823;entryY=0.014;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="NI3BNErvRWoYPgV2M6HP-4" target="NI3BNErvRWoYPgV2M6HP-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="830" as="sourcePoint" />
+            <mxPoint x="693" y="890" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-14" value="&lt;span style=&quot;color: rgb(31, 35, 40); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; text-align: left; text-wrap-mode: wrap;&quot;&gt;Notifica actualizaciones de estado&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="NI3BNErvRWoYPgV2M6HP-13" connectable="0" vertex="1">
+          <mxGeometry x="-0.1625" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-17" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.836;exitY=1.012;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="NI3BNErvRWoYPgV2M6HP-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1090" y="790" as="sourcePoint" />
+            <mxPoint x="906" y="890" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-18" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Solicita Financiamiento&amp;nbsp;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="NI3BNErvRWoYPgV2M6HP-17" connectable="0" vertex="1">
+          <mxGeometry x="-0.1601" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-25" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="NI3BNErvRWoYPgV2M6HP-5" target="NI3BNErvRWoYPgV2M6HP-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="430" y="810" as="sourcePoint" />
+            <mxPoint x="480" y="760" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="270" y="1010" />
+              <mxPoint x="270" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-26" value="&lt;span style=&quot;color: rgb(31, 35, 40); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; text-align: left; text-wrap-mode: wrap;&quot;&gt;Envía solicitudes de mantenimiento&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="NI3BNErvRWoYPgV2M6HP-25" connectable="0" vertex="1">
+          <mxGeometry x="-0.4089" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-27" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.002;exitY=0.548;exitDx=0;exitDy=0;exitPerimeter=0;edgeStyle=orthogonalEdgeStyle;entryX=1;entryY=0.404;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="NI3BNErvRWoYPgV2M6HP-7" target="NI3BNErvRWoYPgV2M6HP-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1230" y="1010" as="sourcePoint" />
+            <mxPoint x="1350" y="720" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1340" y="1022" />
+              <mxPoint x="1340" y="649" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NI3BNErvRWoYPgV2M6HP-28" value="&lt;span style=&quot;color: rgb(31, 35, 40); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; text-align: left; text-wrap-mode: wrap;&quot;&gt;Envía confirmaciones (aprobado/rechazado)&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="NI3BNErvRWoYPgV2M6HP-27" connectable="0" vertex="1">
+          <mxGeometry x="-0.2459" y="-2" relative="1" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6tLl1Tci4UQyVOEjfEXs-1" value="&lt;font&gt;Diagrama de Contexto&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=30;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="578" y="25" width="320" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
