@@ -1,5 +1,6 @@
 package proyecto.MantenimientoUrbano_Backend.infrastructure.persistence;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudMantenimiento;
@@ -9,13 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class SolicitudRepositoryAdapter implements SolicitudRepository {
 
     private final SolicitudJpaRepository jpaRepository;
 
-    public SolicitudRepositoryAdapter(SolicitudJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
-    }
+
     @Override
     public SolicitudMantenimiento save(SolicitudMantenimiento solicitud) {
         SolicitudMantenimientoEntity entity = SolicitudMantenimientoEntity.builder()
