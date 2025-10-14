@@ -15,7 +15,6 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
 
     private final SolicitudJpaRepository jpaRepository;
 
-
     @Override
     public SolicitudMantenimiento save(SolicitudMantenimiento solicitud) {
         SolicitudMantenimientoEntity entity = SolicitudMantenimientoEntity.builder()
@@ -27,6 +26,7 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                 .fechaRegistro(solicitud.getFechaRegistro())
                 .fuente(solicitud.getFuente())
                 .reporteIdExtern(solicitud.getReporteIdExtern())
+                .estadoFinanciero(solicitud.getEstadoFinanciero()) // ✅ nuevo campo
                 .build();
 
         SolicitudMantenimientoEntity saved = jpaRepository.save(entity);
@@ -47,6 +47,7 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                 .fechaRegistro(entity.getFechaRegistro())
                 .fuente(entity.getFuente())
                 .reporteIdExtern(entity.getReporteIdExtern())
+                .estadoFinanciero(entity.getEstadoFinanciero()) // ✅ nuevo campo
                 .build());
     }
 
@@ -68,6 +69,7 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                         .fechaRegistro(entity.getFechaRegistro())
                         .fuente(entity.getFuente())
                         .reporteIdExtern(entity.getReporteIdExtern())
+                        .estadoFinanciero(entity.getEstadoFinanciero()) // ✅ nuevo campo
                         .build())
                 .toList();
     }

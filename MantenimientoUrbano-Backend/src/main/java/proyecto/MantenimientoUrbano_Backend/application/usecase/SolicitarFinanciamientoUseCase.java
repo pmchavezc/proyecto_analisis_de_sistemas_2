@@ -1,0 +1,8 @@
+package proyecto.MantenimientoUrbano_Backend.application.usecase;
+
+import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoRequest;
+import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoResponse;
+
+public interface SolicitarFinanciamientoUseCase {
+    SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request);
+}

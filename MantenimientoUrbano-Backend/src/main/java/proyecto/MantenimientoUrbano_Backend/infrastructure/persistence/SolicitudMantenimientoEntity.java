@@ -2,6 +2,7 @@ package proyecto.MantenimientoUrbano_Backend.infrastructure.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
+import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.model.Prioridad;
 
@@ -34,4 +35,8 @@ public class SolicitudMantenimientoEntity {
 
     private String fuente;
     private Long reporteIdExtern;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_financiero")
+    private EstadoFinanciamiento estadoFinanciero;
 }

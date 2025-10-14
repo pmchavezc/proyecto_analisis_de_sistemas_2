@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import proyecto.MantenimientoUrbano_Backend.application.dto.RegistrarSolicitudRequest;
 import proyecto.MantenimientoUrbano_Backend.application.usecase.RegistrarSolicitudUseCase;
+import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.model.Prioridad;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudMantenimiento;
@@ -25,6 +26,7 @@ public class RegistrarSolicitudService implements RegistrarSolicitudUseCase {
                 .ubicacion(request.getUbicacion())
                 .prioridad(prioridad)
                 .estado(EstadoSolicitud.PENDIENTE)
+                .estadoFinanciero(EstadoFinanciamiento.PENDIENTE)
                 .fechaRegistro(java.time.LocalDate.now())
                 .fuente(request.getFuente())
                 .reporteIdExtern(request.getReporteIdExtern())

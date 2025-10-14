@@ -19,6 +19,7 @@ public class SolicitudMantenimiento {
     private LocalDate fechaRegistro;
     private String fuente;
     private Long reporteIdExtern;
+    private EstadoFinanciamiento estadoFinanciero;
 
     public void marcarComoProgramada() {
         this.estado = EstadoSolicitud.PROGRAMADA;
