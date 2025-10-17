@@ -3,6 +3,7 @@ package proyecto.MantenimientoUrbano_Backend.domain.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,11 +22,7 @@ public class SolicitudMantenimiento {
     private Long reporteIdExtern;
     private EstadoFinanciamiento estadoFinanciero;
 
-    public void marcarComoProgramada() {
-        this.estado = EstadoSolicitud.PROGRAMADA;
-    }
-
-    public void cancelar(String motivo) {
-        this.estado = EstadoSolicitud.CANCELADA;
-    }
+    private LocalDate fechaProgramada;
+    private String cuadrillaAsignada;
+    private List<String> recursosAsignados;
 }

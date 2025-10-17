@@ -1,9 +1,10 @@
-package proyecto.MantenimientoUrbano_Backend.application.service;
+package proyecto.MantenimientoUrbano_Backend.application.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import proyecto.MantenimientoUrbano_Backend.application.dto.RegistrarSolicitudRequest;
+import proyecto.MantenimientoUrbano_Backend.application.service.RegistrarSolicitudService;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.model.Prioridad;
@@ -50,7 +51,7 @@ public class RegistrarSolicitudServiceTest {
         assertEquals(EstadoSolicitud.PENDIENTE, resultado.getEstado());
         assertEquals("Participacion", resultado.getFuente());
         assertEquals(101L, resultado.getReporteIdExtern());
-        assertEquals(EstadoFinanciamiento.PENDIENTE, resultado.getEstadoFinanciero()); // ✅ nuevo campo
+        assertEquals(EstadoFinanciamiento.PENDIENTE, resultado.getEstadoFinanciero());
         assertNotNull(resultado.getFechaRegistro());
 }
 }

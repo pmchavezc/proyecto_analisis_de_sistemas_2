@@ -1,9 +1,10 @@
-package proyecto.MantenimientoUrbano_Backend.application.service;
+package proyecto.MantenimientoUrbano_Backend.application.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import proyecto.MantenimientoUrbano_Backend.application.service.SolicitarFinanciamientoService;
 import proyecto.MantenimientoUrbano_Backend.domain.model.*;
 import proyecto.MantenimientoUrbano_Backend.domain.port.PortalFinanzas;
 import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;

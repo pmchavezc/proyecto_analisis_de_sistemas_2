@@ -10,6 +10,8 @@ import proyecto.MantenimientoUrbano_Backend.domain.model.Prioridad;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudMantenimiento;
 import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class RegistrarSolicitudService implements RegistrarSolicitudUseCase {

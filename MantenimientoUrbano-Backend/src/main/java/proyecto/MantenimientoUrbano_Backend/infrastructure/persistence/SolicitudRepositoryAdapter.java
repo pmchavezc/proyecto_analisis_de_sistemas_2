@@ -26,7 +26,11 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                 .fechaRegistro(solicitud.getFechaRegistro())
                 .fuente(solicitud.getFuente())
                 .reporteIdExtern(solicitud.getReporteIdExtern())
-                .estadoFinanciero(solicitud.getEstadoFinanciero()) // ✅ nuevo campo
+                .estadoFinanciero(solicitud.getEstadoFinanciero())
+                .estadoFinanciero(solicitud.getEstadoFinanciero())
+                .fechaProgramada(solicitud.getFechaProgramada())
+                .cuadrillaAsignada(solicitud.getCuadrillaAsignada())
+                .recursosAsignados(solicitud.getRecursosAsignados())
                 .build();
 
         SolicitudMantenimientoEntity saved = jpaRepository.save(entity);
@@ -47,7 +51,11 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                 .fechaRegistro(entity.getFechaRegistro())
                 .fuente(entity.getFuente())
                 .reporteIdExtern(entity.getReporteIdExtern())
-                .estadoFinanciero(entity.getEstadoFinanciero()) // ✅ nuevo campo
+                .estadoFinanciero(entity.getEstadoFinanciero())
+                .estadoFinanciero(entity.getEstadoFinanciero())
+                .fechaProgramada(entity.getFechaProgramada())
+                .cuadrillaAsignada(entity.getCuadrillaAsignada())
+                .recursosAsignados(entity.getRecursosAsignados())
                 .build());
     }
 
@@ -69,7 +77,11 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                         .fechaRegistro(entity.getFechaRegistro())
                         .fuente(entity.getFuente())
                         .reporteIdExtern(entity.getReporteIdExtern())
-                        .estadoFinanciero(entity.getEstadoFinanciero()) // ✅ nuevo campo
+                        .estadoFinanciero(entity.getEstadoFinanciero())
+                        .estadoFinanciero(entity.getEstadoFinanciero())
+                        .fechaProgramada(entity.getFechaProgramada())
+                        .cuadrillaAsignada(entity.getCuadrillaAsignada())
+                        .recursosAsignados(entity.getRecursosAsignados())
                         .build())
                 .toList();
     }
