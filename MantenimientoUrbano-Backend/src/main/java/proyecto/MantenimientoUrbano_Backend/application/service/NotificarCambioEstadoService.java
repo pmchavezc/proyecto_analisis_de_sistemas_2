@@ -30,8 +30,11 @@ public class NotificarCambioEstadoService implements NotificarCambioEstadoUseCas
 
     @Override
     public void notificarSiAplica(SolicitudMantenimiento solicitud) {
-        boolean estadoOperativoValido = ESTADOS_OPERATIVOS_NOTIFICABLES.contains(solicitud.getEstado());
-        boolean estadoFinancieroValido = ESTADOS_FINANCIEROS_NOTIFICABLES.contains(solicitud.getEstadoFinanciero());
+        boolean estadoOperativoValido = solicitud.getEstado() != null &&
+                ESTADOS_OPERATIVOS_NOTIFICABLES.contains(solicitud.getEstado());
+
+        boolean estadoFinancieroValido = solicitud.getEstadoFinanciero() != null &&
+                ESTADOS_FINANCIEROS_NOTIFICABLES.contains(solicitud.getEstadoFinanciero());
 
         if (estadoOperativoValido || estadoFinancieroValido) {
             NotificacionEstadoDTO notificacion = NotificacionEstadoDTO.builder()
@@ -44,5 +47,3 @@ public class NotificarCambioEstadoService implements NotificarCambioEstadoUseCas
         }
     }
 }
-
-

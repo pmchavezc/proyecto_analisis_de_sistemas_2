@@ -31,4 +31,9 @@ public class MantenimientoController {
         return ResponseEntity.ok(listarSolicitudesUseCase.listarPendientesOrdenadas());
     }
 
+    @GetMapping("/solicitudes/todas")
+    public ResponseEntity<List<SolicitudMantenimiento>> listarTodas() {
+        return ResponseEntity.ok(listarSolicitudesUseCase.listarTodasOrdenadas());
+    }
+
 }

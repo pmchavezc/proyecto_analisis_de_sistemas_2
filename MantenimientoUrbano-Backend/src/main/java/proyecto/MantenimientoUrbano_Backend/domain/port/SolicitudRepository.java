@@ -9,4 +9,5 @@ public interface SolicitudRepository {
     SolicitudMantenimiento save(SolicitudMantenimiento solicitud);
     Optional<SolicitudMantenimiento> findById(Long id);
     List<SolicitudMantenimiento> findPendientesOrdenadas();
+    List<SolicitudMantenimiento> findTodasOrdenadas();
 }

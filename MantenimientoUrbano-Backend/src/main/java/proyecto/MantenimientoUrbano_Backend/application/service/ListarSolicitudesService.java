@@ -18,4 +18,9 @@ public class ListarSolicitudesService implements ListarSolicitudesUseCase {
     public List<SolicitudMantenimiento> listarPendientesOrdenadas() {
         return repository.findPendientesOrdenadas();
     }
+
+    @Override
+    public List<SolicitudMantenimiento> listarTodasOrdenadas() {
+        return repository.findTodasOrdenadas();
+    }
 }

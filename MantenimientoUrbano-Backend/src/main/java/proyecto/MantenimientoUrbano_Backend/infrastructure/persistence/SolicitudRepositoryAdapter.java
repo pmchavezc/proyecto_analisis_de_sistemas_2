@@ -85,4 +85,30 @@ public class SolicitudRepositoryAdapter implements SolicitudRepository {
                         .build())
                 .toList();
     }
+
+    @Override
+    public List<SolicitudMantenimiento> findTodasOrdenadas() {
+        return jpaRepository.findAll().stream()
+                .sorted((a, b) -> {
+                    int cmp = b.getPrioridad().compareTo(a.getPrioridad());
+                    return cmp != 0 ? cmp : a.getFechaRegistro().compareTo(b.getFechaRegistro());
+                })
+                .map(entity -> SolicitudMantenimiento.builder()
+                        .id(entity.getId())
+                        .tipo(entity.getTipo())
+                        .descripcion(entity.getDescripcion())
+                        .ubicacion(entity.getUbicacion())
+                        .prioridad(entity.getPrioridad())
+                        .estado(entity.getEstado())
+                        .fechaRegistro(entity.getFechaRegistro())
+                        .fuente(entity.getFuente())
+                        .reporteIdExtern(entity.getReporteIdExtern())
+                        .estadoFinanciero(entity.getEstadoFinanciero())
+                        .fechaProgramada(entity.getFechaProgramada())
+                        .cuadrillaAsignada(entity.getCuadrillaAsignada())
+                        .recursosAsignados(entity.getRecursosAsignados())
+                        .build())
+                .toList();
+    }
+
 }

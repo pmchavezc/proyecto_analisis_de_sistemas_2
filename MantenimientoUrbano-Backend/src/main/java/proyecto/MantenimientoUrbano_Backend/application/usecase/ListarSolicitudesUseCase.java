@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ListarSolicitudesUseCase {
     List<SolicitudMantenimiento> listarPendientesOrdenadas();
+    List<SolicitudMantenimiento> listarTodasOrdenadas();
 }
