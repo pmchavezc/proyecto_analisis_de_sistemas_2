@@ -1,0 +1,28 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Construir proyecto
+        run: mvn clean package -DskipTests
+
+      - name: Construir imagen Docker
+        run: docker build -t mantenimiento-urbano-backend .
+
+      - name: Subir imagen (opcional)
+        run: echo "Aquí iría el push a DockerHub o Render si está configurado"

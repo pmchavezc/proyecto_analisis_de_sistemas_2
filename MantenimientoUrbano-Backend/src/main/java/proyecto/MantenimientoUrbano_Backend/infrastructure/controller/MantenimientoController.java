@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mantenimiento")
 @RequiredArgsConstructor
-public class MantenimientoAPIController {
+public class MantenimientoController {
 
     private final RegistrarSolicitudUseCase registrarSolicitudUseCase;
     private final ListarSolicitudesUseCase listarSolicitudesUseCase;
