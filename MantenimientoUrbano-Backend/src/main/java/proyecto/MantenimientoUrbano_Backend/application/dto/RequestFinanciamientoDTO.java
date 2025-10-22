@@ -1,4 +1,4 @@
-package proyecto.MantenimientoUrbano_Backend.domain.model;
+package proyecto.MantenimientoUrbano_Backend.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SolicitudFinanciamientoRequest {
+
+public class RequestFinanciamientoDTO {
     private Long originId;
     private BigDecimal requestAmount;
     private String name;

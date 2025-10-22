@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolicitudFinanciamientoResponse {
-    private String idTransaccion;
+    private String idTransaccion; // ID generado por Finanzas
     private EstadoFinanciamiento estado;
     private BigDecimal montoAutorizado;
     private String motivo;

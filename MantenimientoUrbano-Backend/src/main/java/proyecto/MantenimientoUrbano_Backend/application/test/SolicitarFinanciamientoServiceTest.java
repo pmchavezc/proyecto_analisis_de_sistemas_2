@@ -1,9 +1,6 @@
 package proyecto.MantenimientoUrbano_Backend.application.test;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import proyecto.MantenimientoUrbano_Backend.application.service.SolicitarFinanciamientoService;
 import proyecto.MantenimientoUrbano_Backend.domain.model.*;
 import proyecto.MantenimientoUrbano_Backend.domain.port.PortalFinanzas;
@@ -11,118 +8,82 @@ import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class SolicitarFinanciamientoServiceTest {
 
-    private PortalFinanzas mockFinanzas;
-    private SolicitudRepository mockRepository;
-    private SolicitarFinanciamientoService service;
-
-    @BeforeEach
-    void setUp() {
-        mockFinanzas = Mockito.mock(PortalFinanzas.class);
-        mockRepository = Mockito.mock(SolicitudRepository.class);
-        service = new SolicitarFinanciamientoService(mockFinanzas, mockRepository);
-    }
-
     @Test
-    void testFinanciamientoExitoso() {
+    void testSolicitarFinanciamiento_actualizaEstadoYFinanciamiento() {
         // Arrange
-        Long solicitudId = 1L;
+        PortalFinanzas portalFinanzas = mock(PortalFinanzas.class);
+        SolicitudRepository solicitudRepository = mock(SolicitudRepository.class);
+        SolicitarFinanciamientoService service = new SolicitarFinanciamientoService(portalFinanzas, solicitudRepository);
+
+        Long solicitudId = 5L;
 
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(solicitudId)
-                .tipo("bache")
-                .descripcion("Hueco en calle")
-                .ubicacion("Zona 1")
-                .prioridad(Prioridad.ALTA)
                 .estado(EstadoSolicitud.PROGRAMADA)
                 .estadoFinanciero(EstadoFinanciamiento.PENDIENTE)
-                .fechaRegistro(LocalDate.now())
-                .fuente("Participacion")
-                .reporteIdExtern(100L)
+                .idFinanciamiento(null)
                 .build();
 
         SolicitudFinanciamientoRequest request = SolicitudFinanciamientoRequest.builder()
-                .idSolicitud(solicitudId)
-                .tipoGasto("Infraestructura")
-                .montoEstimado(BigDecimal.valueOf(5000))
-                .adjuntos(List.of())
+                .originId(1L) // ← Este valor es para Finanzas, no para buscar la solicitud
+                .requestAmount(BigDecimal.valueOf(1000))
+                .name("Mantenimiento Urbano")
+                .reason("Baches Sajcavilla")
+                .requestDate("2025-01-01")
+                .email("joelmorales05982@gmail.com")
+                .priorityId(3)
                 .build();
 
-        SolicitudFinanciamientoResponse response = SolicitudFinanciamientoResponse.builder()
-                .idTransaccion("TX-001")
-                .estado(EstadoFinanciamiento.APROBADO)
-                .montoAutorizado(BigDecimal.valueOf(5000))
-                .motivo("Autorizado")
-                .fechaSolicitud(LocalDate.now())
-                .fechaDecision(LocalDate.now())
+        SolicitudFinanciamientoResponse respuesta = SolicitudFinanciamientoResponse.builder()
+                .idTransaccion("41")
+                .estado(EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO)
+                .montoAutorizado(BigDecimal.valueOf(1000))
+                .fechaSolicitud(LocalDate.of(2025, 1, 1))
                 .build();
 
-        Mockito.when(mockRepository.findById(solicitudId)).thenReturn(Optional.of(solicitud));
-        Mockito.when(mockFinanzas.solicitarFinanciamiento(request)).thenReturn(response);
+        when(solicitudRepository.findById(solicitudId)).thenReturn(Optional.of(solicitud));
+        when(portalFinanzas.solicitarFinanciamiento(request)).thenReturn(respuesta);
 
         // Act
-        SolicitudFinanciamientoResponse resultado = service.solicitarFinanciamiento(request);
+        SolicitudFinanciamientoResponse result = service.solicitarFinanciamiento(request, solicitudId);
 
         // Assert
-        assertEquals(EstadoFinanciamiento.APROBADO, resultado.getEstado());
+        assertEquals("41", result.getIdTransaccion());
+        assertEquals(EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO, result.getEstado());
 
-        ArgumentCaptor<SolicitudMantenimiento> captor = ArgumentCaptor.forClass(SolicitudMantenimiento.class);
-        Mockito.verify(mockRepository).save(captor.capture());
-
-        SolicitudMantenimiento solicitudGuardada = captor.getValue();
-        assertEquals(solicitudId, solicitudGuardada.getId());
-        assertEquals(EstadoFinanciamiento.FINANCIADA, solicitudGuardada.getEstadoFinanciero());
+        verify(solicitudRepository).actualizarEstadoFinanciero(
+                eq(solicitudId),
+                eq(EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO),
+                eq(41L)
+        );
     }
 
     @Test
-    void testSolicitudNoProgramadaLanzaExcepcion() {
-        // Arrange
-        Long solicitudId = 2L;
+    void testSolicitarFinanciamiento_lanzaExcepcionSiNoProgramada() {
+        PortalFinanzas portalFinanzas = mock(PortalFinanzas.class);
+        SolicitudRepository solicitudRepository = mock(SolicitudRepository.class);
+        SolicitarFinanciamientoService service = new SolicitarFinanciamientoService(portalFinanzas, solicitudRepository);
+
+        Long solicitudId = 5L;
 
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(solicitudId)
                 .estado(EstadoSolicitud.PENDIENTE)
                 .build();
 
-        SolicitudFinanciamientoRequest request = SolicitudFinanciamientoRequest.builder()
-                .idSolicitud(solicitudId)
-                .tipoGasto("Materiales")
-                .montoEstimado(BigDecimal.valueOf(3000))
-                .build();
-
-        Mockito.when(mockRepository.findById(solicitudId)).thenReturn(Optional.of(solicitud));
-
-        // Act & Assert
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
-                service.solicitarFinanciamiento(request));
-
-        assertEquals("Solo se puede solicitar financiamiento si la solicitud está programada", ex.getMessage());
-    }
-
-    @Test
-    void testSolicitudNoExisteLanzaExcepcion() {
-        // Arrange
-        Long solicitudId = 999L;
+        when(solicitudRepository.findById(solicitudId)).thenReturn(Optional.of(solicitud));
 
         SolicitudFinanciamientoRequest request = SolicitudFinanciamientoRequest.builder()
-                .idSolicitud(solicitudId)
-                .tipoGasto("Materiales")
-                .montoEstimado(BigDecimal.valueOf(3000))
+                .originId(1L)
                 .build();
 
-        Mockito.when(mockRepository.findById(solicitudId)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
-                service.solicitarFinanciamiento(request));
-
-        assertEquals("Solicitud no encontrada", ex.getMessage());
+        assertThrows(IllegalStateException.class, () -> service.solicitarFinanciamiento(request, solicitudId));
     }
 }

@@ -1,4 +1,4 @@
-package proyecto.MantenimientoUrbano_Backend.infrastructure.client;
+package proyecto.MantenimientoUrbano_Backend.infrastructure.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

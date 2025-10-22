@@ -4,5 +4,5 @@ import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamiento
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoResponse;
 
 public interface SolicitarFinanciamientoUseCase {
-    SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request);
+    SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request, Long solicitudId);
 }

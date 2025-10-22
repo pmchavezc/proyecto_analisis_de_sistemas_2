@@ -45,6 +45,8 @@ public class SolicitudMantenimientoEntity {
 
     private String cuadrillaAsignada;
 
+    private Long idFinanciamiento;
+
     @ElementCollection
     @CollectionTable(name = "recursos_asignados", joinColumns = @JoinColumn(name = "solicitud_id"))
     @Column(name = "recurso")

@@ -1,57 +1,52 @@
 package proyecto.MantenimientoUrbano_Backend.application.test;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import proyecto.MantenimientoUrbano_Backend.application.dto.RegistrarSolicitudRequest;
 import proyecto.MantenimientoUrbano_Backend.application.service.RegistrarSolicitudService;
-import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
-import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
-import proyecto.MantenimientoUrbano_Backend.domain.model.Prioridad;
-import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudMantenimiento;
+import proyecto.MantenimientoUrbano_Backend.domain.model.*;
 import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;
-import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
-public class RegistrarSolicitudServiceTest {
-
-    private SolicitudRepository mockRepository;
-    private RegistrarSolicitudService service;
-
-    @BeforeEach
-    void setUp() {
-        mockRepository = Mockito.mock(SolicitudRepository.class);
-        service = new RegistrarSolicitudService(mockRepository);
-    }
+public class RegistrarSolicitudServiceTest  {
 
     @Test
-    void testRegistrarSolicitudValida() {
-        // Arrange
+    void testRegistrarSolicitud_guardaCorrectamente() {
+        SolicitudRepository repository = mock(SolicitudRepository.class);
+        RegistrarSolicitudService service = new RegistrarSolicitudService(repository);
+
         RegistrarSolicitudRequest request = RegistrarSolicitudRequest.builder()
-                .tipo("bache")
-                .descripcion("Hueco en calle 10")
-                .ubicacion("Zona 3")
+                .tipo("Bacheo")
+                .descripcion("Hueco en calle principal")
+                .ubicacion("Zona 1")
                 .prioridad("ALTA")
-                .fuente("Participacion")
-                .reporteIdExtern(101L)
+                .fuente("Vecino")
+                .reporteIdExtern(Long.valueOf("EXT123"))
                 .build();
 
-        Mockito.when(mockRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        SolicitudMantenimiento solicitudEsperada = SolicitudMantenimiento.builder()
+                .tipo("Bacheo")
+                .descripcion("Hueco en calle principal")
+                .ubicacion("Zona 1")
+                .prioridad(Prioridad.ALTA)
+                .estado(EstadoSolicitud.PENDIENTE)
+                .estadoFinanciero(EstadoFinanciamiento.PENDIENTE)
+                .fechaRegistro(LocalDate.now())
+                .fuente("Vecino")
+                .reporteIdExtern(Long.valueOf("EXT123"))
+                .build();
 
-        // Act
+        when(repository.save(any())).thenReturn(solicitudEsperada);
+
         SolicitudMantenimiento resultado = service.registrar(request);
 
-        // Assert
-        assertEquals("bache", resultado.getTipo());
-        assertEquals("Hueco en calle 10", resultado.getDescripcion());
-        assertEquals("Zona 3", resultado.getUbicacion());
+        assertEquals("Bacheo", resultado.getTipo());
         assertEquals(Prioridad.ALTA, resultado.getPrioridad());
-        assertEquals(EstadoSolicitud.PENDIENTE, resultado.getEstado());
-        assertEquals("Participacion", resultado.getFuente());
-        assertEquals(101L, resultado.getReporteIdExtern());
         assertEquals(EstadoFinanciamiento.PENDIENTE, resultado.getEstadoFinanciero());
-        assertNotNull(resultado.getFechaRegistro());
-}
+        verify(repository).save(any());
+    }
 }

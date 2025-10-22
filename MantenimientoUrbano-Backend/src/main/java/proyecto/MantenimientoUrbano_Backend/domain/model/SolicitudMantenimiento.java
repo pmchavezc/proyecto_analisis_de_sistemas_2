@@ -21,7 +21,7 @@ public class SolicitudMantenimiento {
     private String fuente;
     private Long reporteIdExtern;
     private EstadoFinanciamiento estadoFinanciero;
-
+    private Long idFinanciamiento;
     private LocalDate fechaProgramada;
     private String cuadrillaAsignada;
     private List<String> recursosAsignados;

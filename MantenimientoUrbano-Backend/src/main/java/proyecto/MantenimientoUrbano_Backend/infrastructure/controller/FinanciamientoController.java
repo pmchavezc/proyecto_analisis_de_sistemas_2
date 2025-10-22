@@ -14,14 +14,15 @@ public class FinanciamientoController {
 
     private final SolicitarFinanciamientoUseCase useCase;
 
-
     @PostMapping("/{id}/financiamiento")
     public ResponseEntity<SolicitudFinanciamientoResponse> solicitarFinanciamiento(
             @PathVariable Long id,
             @RequestBody SolicitudFinanciamientoRequest request
     ) {
-        request.setIdSolicitud(id);
-        var response = useCase.solicitarFinanciamiento(request);
+        // Usamos el ID de la URL como el ID de la solicitud interna
+        // Pero dejamos el originId del JSON tal como viene (ej. 1 para Mantenimiento Urbano)
+        SolicitudFinanciamientoResponse response = useCase.solicitarFinanciamiento(request, id);
         return ResponseEntity.ok(response);
     }
+
 }

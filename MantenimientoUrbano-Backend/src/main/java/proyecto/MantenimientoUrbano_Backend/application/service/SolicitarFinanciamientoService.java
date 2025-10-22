@@ -14,10 +14,9 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
     private final PortalFinanzas portalFinanzas;
     private final SolicitudRepository solicitudRepository;
 
-
     @Override
-    public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request) {
-        SolicitudMantenimiento solicitud = solicitudRepository.findById(request.getIdSolicitud())
+    public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request, Long solicitudId) {
+        SolicitudMantenimiento solicitud = solicitudRepository.findById(solicitudId)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
 
         if (!solicitud.getEstado().equals(EstadoSolicitud.PROGRAMADA)) {
@@ -26,12 +25,14 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
 
         SolicitudFinanciamientoResponse respuesta = portalFinanzas.solicitarFinanciamiento(request);
 
-        solicitud.setEstadoFinanciero(EstadoFinanciamiento.valueOf(respuesta.getEstado() == EstadoFinanciamiento.APROBADO
-                ? "FINANCIADA"
-                : "EN_ESPERA_FINANCIAMIENTO"));
-
-        solicitudRepository.save(solicitud);
-
+        solicitudRepository.actualizarEstadoFinanciero(
+                solicitud.getId(),
+                respuesta.getEstado() == EstadoFinanciamiento.APROBADO
+                        ? EstadoFinanciamiento.FINANCIADA
+                        : EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO,
+                Long.parseLong(respuesta.getIdTransaccion())
+        );
         return respuesta;
     }
+
 }
