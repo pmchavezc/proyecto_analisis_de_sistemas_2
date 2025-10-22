@@ -19,12 +19,15 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
         SolicitudMantenimiento solicitud = solicitudRepository.findById(solicitudId)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
 
-        if (!solicitud.getEstado().equals(EstadoSolicitud.PROGRAMADA)) {
-            throw new IllegalStateException("Solo se puede solicitar financiamiento si la solicitud está programada");
+        // ✅ Validación operativa: solo si está pendiente
+        if (!solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
+            throw new IllegalStateException("Solo se puede solicitar financiamiento si la solicitud está pendiente");
         }
 
+        // ✅ Solicitud a Finanzas
         SolicitudFinanciamientoResponse respuesta = portalFinanzas.solicitarFinanciamiento(request);
 
+        // ✅ Actualización del estado financiero
         solicitudRepository.actualizarEstadoFinanciero(
                 solicitud.getId(),
                 respuesta.getEstado() == EstadoFinanciamiento.APROBADO
@@ -32,7 +35,7 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
                         : EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO,
                 Long.parseLong(respuesta.getIdTransaccion())
         );
+
         return respuesta;
     }
-
 }

@@ -25,7 +25,7 @@ public class RegistrarSolicitudServiceTest  {
                 .ubicacion("Zona 1")
                 .prioridad("ALTA")
                 .fuente("Vecino")
-                .reporteIdExtern(Long.valueOf("EXT123"))
+                .reporteIdExtern(null)
                 .build();
 
         SolicitudMantenimiento solicitudEsperada = SolicitudMantenimiento.builder()
@@ -37,7 +37,7 @@ public class RegistrarSolicitudServiceTest  {
                 .estadoFinanciero(EstadoFinanciamiento.PENDIENTE)
                 .fechaRegistro(LocalDate.now())
                 .fuente("Vecino")
-                .reporteIdExtern(Long.valueOf("EXT123"))
+                .reporteIdExtern(null)
                 .build();
 
         when(repository.save(any())).thenReturn(solicitudEsperada);

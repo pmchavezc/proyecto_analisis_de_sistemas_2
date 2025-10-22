@@ -10,10 +10,12 @@ import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoRequest;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoResponse;
 import proyecto.MantenimientoUrbano_Backend.domain.port.PortalFinanzas;
+import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.FinanzasEstadoResponse;
 import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.FinanzasResponseRaw;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -25,7 +27,7 @@ public class FinanzasRestAdapter implements PortalFinanzas {
     @Override
     public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request) {
 
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiJjMDkzNDA5ZC04Y2U2LTQxMzctODcxMC03OGZjZmVjOWQ4MDgiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjUiXSwibmJmIjoxNzYxMTM3MzIwLCJleHAiOjE3NjExNTIwMjAsImlhdCI6MTc2MTEzNzYyMH0.ns0VqZiTShrp7YlxECY5NWotv0YAhJwyFZepWux2CQA";
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiI2Zjk5NjkxZC1kZTYyLTQzMWItODZjNy1kYzNmZjQ5YjZiMzQiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjUiXSwibmJmIjoxNzYxMTU1ODMyLCJleHAiOjE3NjExNzA1MzIsImlhdCI6MTc2MTE1NjEzMn0.OPWzu8MpIjCebWDXiQv6SNjXsPgfxtw9Z4GSqwF-76Y";
 
         RequestFinanciamientoDTO dto = RequestFinanciamientoDTO.builder()
                 .originId(request.getOriginId())
@@ -82,5 +84,38 @@ public class FinanzasRestAdapter implements PortalFinanzas {
                         ? LocalDate.parse(raw.getApprovedDate(), formatter)
                         : null)
                 .build();
+    }
+
+    @Override
+    public EstadoFinanciamiento consultarEstadoFinanciero(Long idFinanciamiento) {
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiI2Zjk5NjkxZC1kZTYyLTQzMWItODZjNy1kYzNmZjQ5YjZiMzQiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjUiXSwibmJmIjoxNzYxMTU1ODMyLCJleHAiOjE3NjExNzA1MzIsImlhdCI6MTc2MTE1NjEzMn0.OPWzu8MpIjCebWDXiQv6SNjXsPgfxtw9Z4GSqwF-76Y";
+
+        String url = "http://93.127.139.74:83/api/v1/Request/" + idFinanciamiento;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setBearerAuth(token);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<FinanzasEstadoResponse> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                FinanzasEstadoResponse.class
+        );
+
+        if (response.getBody() == null || response.getBody().getData() == null) {
+            throw new IllegalStateException("No se pudo obtener el estado desde Finanzas");
+        }
+
+        int statusId = response.getBody().getData().getRequestStatusId();
+
+        return switch (statusId) {
+            case 1 -> EstadoFinanciamiento.EN_ESPERA_FINANCIAMIENTO;
+            case 2 -> EstadoFinanciamiento.FINANCIADA;
+            case 3 -> EstadoFinanciamiento.RECHAZADO;
+            default -> throw new IllegalStateException("Estado desconocido: " + statusId);
+        };
     }
 }

@@ -6,6 +6,8 @@ import proyecto.MantenimientoUrbano_Backend.application.usecase.CambiarEstadoSol
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CambiarEstadoSolicitudService implements CambiarEstadoSolicitudUseCase {
@@ -16,6 +18,16 @@ public class CambiarEstadoSolicitudService implements CambiarEstadoSolicitudUseC
         var solicitud = solicitudRepository.findById(idSolicitud)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
 
+        List<EstadoSolicitud> estadosPermitidos = List.of(
+                EstadoSolicitud.CANCELADA,
+                EstadoSolicitud.FINALIZADA,
+                EstadoSolicitud.COMPLETADA,
+                EstadoSolicitud.PENDIENTE
+        );
+
+        if (!estadosPermitidos.contains(nuevoEstado)) {
+            throw new IllegalStateException("Este cambio de estado no está permitido manualmente");
+        }
         solicitud.setEstado(nuevoEstado);
         solicitudRepository.save(solicitud);
     }
