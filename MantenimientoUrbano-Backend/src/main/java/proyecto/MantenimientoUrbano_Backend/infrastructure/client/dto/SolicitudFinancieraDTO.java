@@ -17,4 +17,8 @@ public class SolicitudFinancieraDTO {
     private String approvedDate;
     private String email;
     private Integer requestStatusId;
+    private String requestStatusNombre;
+    private String priorityNombre;
+    private String originNombre;
+
 }

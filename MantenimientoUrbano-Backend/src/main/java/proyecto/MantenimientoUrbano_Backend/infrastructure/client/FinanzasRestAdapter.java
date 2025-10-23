@@ -116,11 +116,11 @@ public class FinanzasRestAdapter implements PortalFinanzas {
     }
 
     public List<SolicitudFinancieraDTO> obtenerSolicitudes() {
-        String url = "http://93.127.139.74:83/api/v1/Request?PageNumber=1&PageSize=30&IncludeTotal=false";
+        String url = "http://93.127.139.74:83/api/v1/Request?Include=requestStatus,origin,priority&PageNumber=1&PageSize=30&IncludeTotal=false";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(token); // ✅ Corrección aquí
+        headers.setBearerAuth(token); // ✅ Bearer token correcto
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
@@ -142,6 +142,9 @@ public class FinanzasRestAdapter implements PortalFinanzas {
                         .approvedDate(item.get("approvedDate") != null ? item.get("approvedDate").toString() : null)
                         .email(item.get("email").toString())
                         .requestStatusId((Integer) item.get("requestStatusId"))
+                        .requestStatusNombre(item.get("requestStatus") != null ? ((Map<?, ?>) item.get("requestStatus")).get("name").toString() : null)
+                        .priorityNombre(item.get("priority") != null ? ((Map<?, ?>) item.get("priority")).get("name").toString() : null)
+                        .originNombre(item.get("origin") != null ? ((Map<?, ?>) item.get("origin")).get("name").toString() : null)
                         .build())
                 .toList();
     }
