@@ -3,10 +3,14 @@ package proyecto.MantenimientoUrbano_Backend.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import proyecto.MantenimientoUrbano_Backend.application.service.ConsultarSolicitudesFinancierasService;
 import proyecto.MantenimientoUrbano_Backend.application.service.SincronizarEstadoFinancieroService;
 import proyecto.MantenimientoUrbano_Backend.application.usecase.SolicitarFinanciamientoUseCase;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoRequest;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamientoResponse;
+import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.SolicitudFinancieraDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/mantenimiento/solicitudes")
@@ -15,6 +19,7 @@ public class FinanciamientoController {
 
     private final SolicitarFinanciamientoUseCase useCase;
     private final SincronizarEstadoFinancieroService sincronizarEstadoFinancieroService;
+    private final ConsultarSolicitudesFinancierasService service;
 
     @PostMapping("/{id}/financiamiento")
     public ResponseEntity<SolicitudFinanciamientoResponse> solicitarFinanciamiento(
@@ -31,6 +36,14 @@ public class FinanciamientoController {
     public ResponseEntity<Void> sincronizarEstadoFinanciero(@PathVariable Long id) {
         sincronizarEstadoFinancieroService.sincronizarEstado(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+    @GetMapping("/financiamiento/todas")
+    public ResponseEntity<List<SolicitudFinancieraDTO>> listarSolicitudes() {
+        List<SolicitudFinancieraDTO> solicitudes = service.listarSolicitudes();
+        return ResponseEntity.ok(solicitudes);
     }
 
 }

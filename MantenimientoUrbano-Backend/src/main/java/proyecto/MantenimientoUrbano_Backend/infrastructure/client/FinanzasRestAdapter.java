@@ -12,6 +12,7 @@ import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudFinanciamiento
 import proyecto.MantenimientoUrbano_Backend.domain.port.PortalFinanzas;
 import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.FinanzasEstadoResponse;
 import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.FinanzasResponseRaw;
+import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.SolicitudFinancieraDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,11 +25,10 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
     private final RestTemplate restTemplate;
 
+    private final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiI3ZjA3MmEyZi0wNDBiLTQxYmItODE3NC0yYWNjNGQ3ZDM3ODgiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjIiLCI1Il0sIm5iZiI6MTc2MTIwMDI3MSwiZXhwIjoxNzYxODkxNzcxLCJpYXQiOjE3NjEyMDA1NzF9.0TNeQ7o8ApSZYmK8EoKGh1Jt4v88l1hv_UhwTpbtuak"; // ✅ Token válido
+
     @Override
     public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request) {
-
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiIzZTRiNDVhMy1hNTJjLTQ0NzEtYTU3MC1jYzRkMzJhMWY2YTUiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjIiLCI1Il0sIm5iZiI6MTc2MTE4NzczNywiZXhwIjoxNzYxMjAyNDM3LCJpYXQiOjE3NjExODgwMzd9.JyV78h0WvCPKO2cEDzAYwAfsmWoF5gsef0gfmcFX7vI";
-
         RequestFinanciamientoDTO dto = RequestFinanciamientoDTO.builder()
                 .originId(request.getOriginId())
                 .requestAmount(request.getRequestAmount())
@@ -49,7 +49,7 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(token); // ✅ Corrección aquí
 
         HttpEntity<RequestFinanciamientoDTO> entity = new HttpEntity<>(dto, headers);
 
@@ -64,8 +64,6 @@ public class FinanzasRestAdapter implements PortalFinanzas {
         }
 
         var raw = response.getBody().getData();
-
-        // ✅ Formato esperado por Finanzas: dd/MM/yyyy
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         return SolicitudFinanciamientoResponse.builder()
@@ -88,13 +86,11 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
     @Override
     public EstadoFinanciamiento consultarEstadoFinanciero(Long idFinanciamiento) {
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiIzZTRiNDVhMy1hNTJjLTQ0NzEtYTU3MC1jYzRkMzJhMWY2YTUiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjIiLCI1Il0sIm5iZiI6MTc2MTE4NzczNywiZXhwIjoxNzYxMjAyNDM3LCJpYXQiOjE3NjExODgwMzd9.JyV78h0WvCPKO2cEDzAYwAfsmWoF5gsef0gfmcFX7vI";
-
         String url = "http://93.127.139.74:83/api/v1/Request/" + idFinanciamiento;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(token); // ✅ Corrección aquí
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
@@ -117,5 +113,36 @@ public class FinanzasRestAdapter implements PortalFinanzas {
             case 3 -> EstadoFinanciamiento.RECHAZADO;
             default -> throw new IllegalStateException("Estado desconocido: " + statusId);
         };
+    }
+
+    public List<SolicitudFinancieraDTO> obtenerSolicitudes() {
+        String url = "http://93.127.139.74:83/api/v1/Request?PageNumber=1&PageSize=30&IncludeTotal=false";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setBearerAuth(token); // ✅ Corrección aquí
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                Map.class
+        );
+
+        List<Map<String, Object>> data = (List<Map<String, Object>>) response.getBody().get("data");
+
+        return data.stream()
+                .map(item -> SolicitudFinancieraDTO.builder()
+                        .id(Long.valueOf(item.get("id").toString()))
+                        .name(item.get("name").toString())
+                        .reason(item.get("reason").toString())
+                        .requestAmount(Double.valueOf(item.get("requestAmount").toString()))
+                        .approvedDate(item.get("approvedDate") != null ? item.get("approvedDate").toString() : null)
+                        .email(item.get("email").toString())
+                        .requestStatusId((Integer) item.get("requestStatusId"))
+                        .build())
+                .toList();
     }
 }
