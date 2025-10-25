@@ -8,10 +8,10 @@ import apiClient from './axios';
 
 // Cliente axios específico para el sistema externo (Participación Ciudadana)
 const externalApiClient = axios.create({
-  baseURL: 'http://localhost:8080/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 // Respuesta del backend externo
