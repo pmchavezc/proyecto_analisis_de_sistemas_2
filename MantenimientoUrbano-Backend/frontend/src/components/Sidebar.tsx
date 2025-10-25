@@ -7,7 +7,7 @@ export default function Sidebar() {
     { path: '/dashboard', label: 'Dashboard' },
     { path: '/solicitudes', label: 'Solicitudes' },
     { path: '/solicitudes-externas', label: 'Solicitudes Recibidas' },
-    { path: '/finanzas', label: 'Finanzas' },
+    { path: '/financiamiento/todas', label: 'Finanzas' },
   ];
 
   return (

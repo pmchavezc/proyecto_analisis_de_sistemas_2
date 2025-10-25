@@ -16,13 +16,18 @@ const externalApiClient = axios.create({
 
 // Respuesta del backend externo
 export interface ExternalApiResponse {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  tipo: string;
-  estado: string;
-  creadoPor: string;
+  id?: number;
+  title?: string;
+  description?: string;
+  location?: string;
+  tipo?: string;
+  estado?: string;
+  creadoPor?: string;
+  // Aceptar campos alternativos posibles
+  reportId?: number;
+  reporteId?: number;
+  nombre?: string;
+  direccion?: string;
 }
 
 // Interface para uso interno en el frontend
@@ -37,6 +42,15 @@ export interface ExternalRequest {
   prioridad?: 'ALTA' | 'MEDIA' | 'BAJA'; // Opcional hasta que el backend lo agregue
 }
 
+// Helper local para tomar varias posibles claves
+const pick = (obj: any, ...keys: string[]) => {
+  if (!obj) return undefined;
+  for (const k of keys) {
+    if (Object.prototype.hasOwnProperty.call(obj, k) && obj[k] !== undefined) return obj[k];
+  }
+  return undefined;
+};
+
 export const externalSystemService = {
   /**
    * Obtiene solicitudes aprobadas del sistema externo (Participación Ciudadana)
@@ -44,22 +58,58 @@ export const externalSystemService = {
    */
   getExternalRequests: async (): Promise<ExternalRequest[]> => {
     try {
-      const response = await externalApiClient.get<ExternalApiResponse[]>('/participacion/reportes-aprobados');
-      
-      // Mapear la respuesta del backend al formato interno
-      return response.data.map(item => ({
-        id: item.id,
-        tipo: item.tipo,
-        titulo: item.title,
-        descripcion: item.description,
-        ubicacion: item.location,
-        estado: item.estado,
-        creadoPor: item.creadoPor,
-        prioridad: undefined, // TODO: Cuando el backend agregue prioridad, mapearla aquí
+      const response = await externalApiClient.get<unknown>('/participacion/reportes-aprobados');
+      let data = response.data;
+
+      // Normalizar distintos formatos que pueda devolver la API
+      let items: any[] = [];
+      if (Array.isArray(data)) {
+        items = data;
+      } else if (data && typeof data === 'object') {
+        // Caso { data: [...] }
+        const maybeData = (data as any).data;
+        if (Array.isArray(maybeData)) {
+          items = maybeData;
+        } else {
+          // Aplanar cualquier valor que sea arreglo dentro del objeto
+          const arrays = Object.values(data).filter((v) => Array.isArray(v)) as any[];
+          if (arrays.length > 0) {
+            items = ([] as any[]).concat(...arrays);
+          } else {
+            // Si viene un solo objeto con campos de la solicitud, envolverlo
+            items = [data];
+          }
+        }
+      }
+
+      // Mapear la respuesta del backend al formato interno (tolerante a nombres distintos)
+      return items.map((item: any) => ({
+        id: Number(pick(item, 'id', 'reportId', 'reporteId')) || 0,
+        tipo: String(pick(item, 'tipo', 'type', 'category', 'nombre') ?? 'Solicitud'),
+        titulo: String(pick(item, 'title', 'titulo', 'nombre') ?? ''),
+        descripcion: String(pick(item, 'description', 'descripcion', 'detalle') ?? ''),
+        ubicacion: String(pick(item, 'location', 'ubicacion', 'direccion') ?? ''),
+        estado: String(pick(item, 'estado', 'status') ?? 'Pendiente'),
+        creadoPor: String(pick(item, 'creadoPor', 'author', 'usuario', 'user') ?? ''),
+        prioridad: undefined,
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al obtener solicitudes externas:', error);
-      throw error;
+
+      // Si es un error de Axios, proporcionar más contexto
+      const status = error?.response?.status;
+      const data = error?.response?.data;
+
+      if (status === 404) {
+        // Si el endpoint no existe, devolver array vacío (no bloquear la UI)
+        console.info('Endpoint de Participación Ciudadana no encontrado (404). Retornando lista vacía.');
+        return [];
+      }
+
+      // Lanzar error con información útil para la UI
+      const errMsg = status ? `HTTP ${status}` : 'Network/Unknown error';
+      const details = data ? JSON.stringify(data) : String(error?.message ?? error);
+      throw new Error(`${errMsg}: ${details}`);
     }
   },
 
@@ -103,7 +153,7 @@ export const externalSystemService = {
       interface ErrWithResponse { response?: { status?: number } }
       const status = (err as ErrWithResponse).response?.status;
       console.error('Error al registrar solicitud externa:', status ?? err);
-      
+
       // Si el endpoint no existe (404), simular para pruebas
       if (status === 404) {
         const simulatedId = Math.floor(Math.random() * 1000) + 1000;

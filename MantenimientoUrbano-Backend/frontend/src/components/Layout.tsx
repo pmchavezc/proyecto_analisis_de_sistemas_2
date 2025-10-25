@@ -20,7 +20,7 @@ export default function Layout({ children }: LayoutProps) {
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/solicitudes', label: 'Solicitudes', icon: FileText },
     { path: '/solicitudes-externas', label: 'Solicitudes Recibidas', icon: Download },
-    { path: '/finanzas', label: 'Finanzas', icon: DollarSign },
+    { path: '/financiamiento/todas', label: 'Finanzas', icon: DollarSign },
   ];
 
   return (

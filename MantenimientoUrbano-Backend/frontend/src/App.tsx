@@ -7,6 +7,7 @@ import RequestsList from './pages/RequestsList';
 import ExternalRequestsList from './pages/ExternalRequestsList';
 import ProgramarSolicitud from './pages/ProgramarSolicitud';
 import SolicitarFinanciamiento from './pages/SolicitarFinanciamiento';
+import FinanciamientoRequestsList from './pages/FinanciamientoRequestsList';
 import { authService } from './api/authService';
 import './App.css';
 
@@ -65,6 +66,10 @@ function App() {
         <Route 
           path="/solicitudes-externas" 
           element={isLoggedIn ? <ExternalRequestsList /> : <Navigate to="/login" />} 
+        />
+        <Route
+          path="/financiamiento/todas"
+          element={isLoggedIn ? <FinanciamientoRequestsList /> : <Navigate to="/login" />}
         />
         <Route
         path="/programar/:id"

@@ -43,4 +43,37 @@ export const financiamientoService = {
       throw err;
     }
   },
+
+  // Método para obtener todas las solicitudes que fueron enviadas a financiamiento
+  async getAllFinancingRequests() {
+    const preferred = '/mantenimiento/solicitud/financiamiento/todas'; // ruta solicitada por el usuario
+    const fallback = '/mantenimiento/solicitudes/financiamiento/todas'; // ruta que el backend podría exponer
+
+    // Intentar la ruta preferida primero
+    try {
+      const response = await apiClient.get(preferred);
+      try { console.debug(`GET ${preferred} response:`, { status: response.status, data: response.data }); } catch (e) { /* ignore */ }
+      console.info(`Usando ruta preferida: ${preferred}`);
+      return response.data;
+    } catch (err: any) {
+      const status = err?.response?.status;
+      console.warn(`GET ${preferred} falló con status ${status ?? 'N/A'}`);
+      // Si el error fue 404, intentar la ruta fallback
+      if (status === 404) {
+        try {
+          const response2 = await apiClient.get(fallback);
+          try { console.debug(`GET ${fallback} response:`, { status: response2.status, data: response2.data }); } catch (e) { /* ignore */ }
+          console.info(`Usando ruta fallback: ${fallback}`);
+          return response2.data;
+        } catch (err2) {
+          console.error(`GET ${fallback} también falló:`, err2);
+          throw err2;
+        }
+      }
+
+      // Si no fue 404 (por ejemplo 401/500), propagar el error original
+      console.error(`Error al obtener solicitudes desde ${preferred}:`, err);
+      throw err;
+    }
+   },
 };

@@ -60,9 +60,32 @@ export function useRequestsData(options: UseRequestsDataOptions = {}): UseReques
       }
       
       setRequests(mappedRequests);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error al cargar solicitudes:', err);
-      setError('No se pudieron cargar las solicitudes. Por favor, intenta de nuevo.');
+
+      // Intentar extraer información útil cuando el error sea de Axios u objeto HTTP
+      const status = err?.response?.status ?? err?.status ?? null;
+      const data = err?.response?.data ?? err?.data ?? null;
+
+      let friendly = 'No se pudieron cargar las solicitudes. Por favor, intenta de nuevo.';
+
+      if (status) {
+        friendly = `No se pudieron cargar las solicitudes (HTTP ${status}). Por favor, intenta de nuevo.`;
+      }
+
+      // Si hay un mensaje en el body, anexarlo (sin exponer objetos no serializables)
+      if (data) {
+        try {
+          const serialized = typeof data === 'string' ? data : JSON.stringify(data);
+          friendly += ` Detalles: ${serialized}`;
+        } catch {
+          friendly += ` Detalles: ${String(data)}`;
+        }
+      } else if (err?.message) {
+        friendly += ` Detalles: ${err.message}`;
+      }
+
+      setError(friendly);
     } finally {
       setLoading(false);
     }
