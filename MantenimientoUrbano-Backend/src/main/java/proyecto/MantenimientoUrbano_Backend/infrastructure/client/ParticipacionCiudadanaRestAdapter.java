@@ -20,11 +20,16 @@ public class ParticipacionCiudadanaRestAdapter {
     private final RestTemplate restTemplate;
     private final SolicitudRepository solicitudRepository;
 
+    // Token JWT para autenticación con el sistema externo
+    private static final String BEARER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvbGlzOTI1NjlAaGg3Zi5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNYW50ZW5pbWllbnRvIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiI5NDE4MjYzNS04MzMxLTQ4ZWUtODVmZS0zODdhMDc1YjhhOGQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZ2VzdGlvbm1hbnRlIiwiZXhwIjoxNzYxNDk3NTMwfQ.TLjm7JfLKtxVqe1Nai3XgFXK12TjE8RoUtC0Wpiqn1M";
+
     public List<ReporteCiudadanoDTO> obtenerReportesAprobados() {
         String url = "http://93.127.139.74:84/reports?all=true";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setBearerAuth(BEARER_TOKEN);
+
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<ParticipacionCiudadanaResponse> response = restTemplate.exchange(
@@ -38,13 +43,11 @@ public class ParticipacionCiudadanaRestAdapter {
             throw new IllegalStateException("No se pudo obtener reportes desde Participación Ciudadana");
         }
 
-        // 🔍 Obtener IDs de reportes ya usados en solicitudes
         List<Long> reportesYaUsados = solicitudRepository.findTodasOrdenadas().stream()
                 .map(SolicitudMantenimiento::getReporteIdExtern)
                 .filter(Objects::nonNull)
                 .toList();
 
-        // ✅ Filtrar solo los aprobados que aún no han sido usados
         return response.getBody().getItems().stream()
                 .filter(r -> r.getStatus() != null && r.getStatus().getId() == 3) // Solo aprobados
                 .filter(r -> !reportesYaUsados.contains(r.getId())) // Solo los no usados
