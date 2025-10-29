@@ -27,6 +27,9 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
         // ✅ Solicitud a Finanzas
         SolicitudFinanciamientoResponse respuesta = portalFinanzas.solicitarFinanciamiento(request);
 
+        if (respuesta == null) {
+            throw new IllegalStateException("No se pudo obtener respuesta del sistema de Finanzas");
+        }
         // ✅ Actualización del estado financiero
         solicitudRepository.actualizarEstadoFinanciero(
                 solicitud.getId(),
@@ -36,6 +39,8 @@ public class SolicitarFinanciamientoService implements SolicitarFinanciamientoUs
                 Long.parseLong(respuesta.getIdTransaccion())
         );
 
+
         return respuesta;
+
     }
 }

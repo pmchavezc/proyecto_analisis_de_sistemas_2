@@ -26,7 +26,7 @@ public class SolicitarFinanciamientoServiceTest {
 
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(solicitudId)
-                .estado(EstadoSolicitud.PROGRAMADA)
+                .estado(EstadoSolicitud.PENDIENTE)
                 .estadoFinanciero(EstadoFinanciamiento.PENDIENTE)
                 .idFinanciamiento(null)
                 .build();

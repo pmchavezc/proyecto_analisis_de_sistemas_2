@@ -1,6 +1,7 @@
 package proyecto.MantenimientoUrbano_Backend.infrastructure.client;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,6 +11,7 @@ import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.Participac
 import proyecto.MantenimientoUrbano_Backend.infrastructure.client.dto.ReporteCiudadanoDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -20,20 +22,48 @@ public class ParticipacionCiudadanaRestAdapter {
     private final RestTemplate restTemplate;
     private final SolicitudRepository solicitudRepository;
 
-    // Token JWT para autenticación con el sistema externo
+    @Value("${participacion.usuario}")
+    private String usuario;
+
+    @Value("${participacion.password}")
+    private String password;
+
+    @Value("${participacion.login-url}")
+    private String loginUrl;
+
+    @Value("${participacion.reports-url}")
+    private String reportsUrl;
+
+    @Value("${}")
+    private String obtenerToken(){
+        Map<String, String> body = Map.of(
+                "email", usuario,
+                "password", password
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
+        ResponseEntity<Map> response = restTemplate.postForEntity(loginUrl, entity, Map.class);
+        if(response.getBody()== null || !response.getBody().containsKey("token")){
+            throw new IllegalStateException("Don't have token at Participation");
+        }
+        return response.getBody().get("token").toString();
+    }
+
     private static final String BEARER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvbGlzOTI1NjlAaGg3Zi5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNYW50ZW5pbWllbnRvIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiI5NDE4MjYzNS04MzMxLTQ4ZWUtODVmZS0zODdhMDc1YjhhOGQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZ2VzdGlvbm1hbnRlIiwiZXhwIjoxNzYxNDk3NTMwfQ.TLjm7JfLKtxVqe1Nai3XgFXK12TjE8RoUtC0Wpiqn1M";
 
     public List<ReporteCiudadanoDTO> obtenerReportesAprobados() {
-        String url = "http://93.127.139.74:84/reports?all=true";
+        String token = obtenerToken();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(BEARER_TOKEN);
+        headers.setBearerAuth(token);
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<ParticipacionCiudadanaResponse> response = restTemplate.exchange(
-                url,
+                reportsUrl,
                 HttpMethod.GET,
                 entity,
                 ParticipacionCiudadanaResponse.class

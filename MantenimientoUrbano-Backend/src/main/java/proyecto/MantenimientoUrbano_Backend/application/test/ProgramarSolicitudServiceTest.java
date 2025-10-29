@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import proyecto.MantenimientoUrbano_Backend.application.dto.ProgramacionRequest;
 import proyecto.MantenimientoUrbano_Backend.application.service.ProgramarSolicitudService;
+import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoFinanciamiento;
 import proyecto.MantenimientoUrbano_Backend.domain.model.EstadoSolicitud;
 import proyecto.MantenimientoUrbano_Backend.domain.model.SolicitudMantenimiento;
 import proyecto.MantenimientoUrbano_Backend.domain.port.SolicitudRepository;
@@ -33,6 +34,7 @@ class ProgramarSolicitudServiceTest {
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(id)
                 .estado(EstadoSolicitud.PENDIENTE)
+                .estadoFinanciero(EstadoFinanciamiento.FINANCIADA)
                 .build();
 
         ProgramacionRequest request = ProgramacionRequest.builder()
@@ -57,6 +59,7 @@ class ProgramarSolicitudServiceTest {
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(id)
                 .estado(EstadoSolicitud.PENDIENTE)
+                .estadoFinanciero(EstadoFinanciamiento.FINANCIADA)
                 .build();
 
         ProgramacionRequest request = ProgramacionRequest.builder()
@@ -75,6 +78,7 @@ class ProgramarSolicitudServiceTest {
         SolicitudMantenimiento solicitud = SolicitudMantenimiento.builder()
                 .id(id)
                 .estado(EstadoSolicitud.PENDIENTE)
+                .estadoFinanciero(EstadoFinanciamiento.FINANCIADA)
                 .build();
 
         ProgramacionRequest request = ProgramacionRequest.builder()

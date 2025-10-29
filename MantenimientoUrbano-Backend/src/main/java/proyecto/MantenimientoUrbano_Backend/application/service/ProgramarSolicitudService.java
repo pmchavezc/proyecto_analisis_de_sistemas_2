@@ -24,9 +24,11 @@
                     .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
 
             // ✅ Validación financiera: solo se puede programar si está financiada
-            if (!solicitud.getEstadoFinanciero().equals(EstadoFinanciamiento.FINANCIADA)) {
+            if (solicitud.getEstadoFinanciero() == null ||
+                    !solicitud.getEstadoFinanciero().equals(EstadoFinanciamiento.FINANCIADA)) {
                 throw new IllegalStateException("Solo se puede programar una solicitud que ya fue financiada");
             }
+
 
             if (!solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
                 throw new SolicitudProgramadaException("Ya se programo esta solicitud porque ya cuenta con los fondos, consulte con el administrador");

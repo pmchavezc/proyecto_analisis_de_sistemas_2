@@ -2,6 +2,7 @@ package proyecto.MantenimientoUrbano_Backend.infrastructure.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -25,10 +26,42 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
     private final RestTemplate restTemplate;
 
-    private final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtYW50ZW5pbWllbnRvQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTWFudGVuaW1pZW50byIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiI3ZjA3MmEyZi0wNDBiLTQxYmItODE3NC0yYWNjNGQ3ZDM3ODgiLCJPcGVyYXRvciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRob3JpemF0aW9uZGVjaXNpb24iOlsiMSIsIjIiLCI1Il0sIm5iZiI6MTc2MTIwMDI3MSwiZXhwIjoxNzYxODkxNzcxLCJpYXQiOjE3NjEyMDA1NzF9.0TNeQ7o8ApSZYmK8EoKGh1Jt4v88l1hv_UhwTpbtuak"; // ✅ Token válido
+    @Value("${finanzas.usuario}")
+    private String usuario;
+
+    @Value("${finanzas.password}")
+    private String password;
+
+    @Value("${finanzas.login-url}")
+    private String loginUrl;
+
+    @Value("${finanzas.api-base}")
+    private String apiBase;
+
+    private String obtenerToken() {
+        Map<String, String> body = Map.of(
+                "email", usuario,
+                "password", password
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<Map> response = restTemplate.postForEntity(loginUrl, entity, Map.class);
+
+        if (response.getBody() == null || !response.getBody().containsKey("token")) {
+            throw new IllegalStateException("No se pudo obtener el token de Finanzas");
+        }
+
+        return response.getBody().get("token").toString();
+    }
 
     @Override
     public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request) {
+        String token = obtenerToken();
+
         RequestFinanciamientoDTO dto = RequestFinanciamientoDTO.builder()
                 .originId(request.getOriginId())
                 .requestAmount(request.getRequestAmount())
@@ -49,12 +82,12 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token); // ✅ Corrección aquí
+        headers.setBearerAuth(token);
 
         HttpEntity<RequestFinanciamientoDTO> entity = new HttpEntity<>(dto, headers);
 
         ResponseEntity<FinanzasResponseRaw> response = restTemplate.postForEntity(
-                "http://93.127.139.74:83/api/v1/Request",
+                apiBase + "/Request",
                 entity,
                 FinanzasResponseRaw.class
         );
@@ -86,11 +119,12 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
     @Override
     public EstadoFinanciamiento consultarEstadoFinanciero(Long idFinanciamiento) {
-        String url = "http://93.127.139.74:83/api/v1/Request/" + idFinanciamiento;
+        String token = obtenerToken();
+        String url = apiBase + "/Request/" + idFinanciamiento;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(token); // ✅ Corrección aquí
+        headers.setBearerAuth(token);
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
@@ -116,11 +150,12 @@ public class FinanzasRestAdapter implements PortalFinanzas {
     }
 
     public List<SolicitudFinancieraDTO> obtenerSolicitudes() {
-        String url = "http://93.127.139.74:83/api/v1/Request?Include=requestStatus,origin,priority&PageNumber=1&PageSize=30&IncludeTotal=false";
+        String token = obtenerToken();
+        String url = apiBase + "/Request?Include=requestStatus,origin,priority&PageNumber=1&PageSize=30&IncludeTotal=false";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(token); // ✅ Bearer token correcto
+        headers.setBearerAuth(token);
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
