@@ -40,6 +40,7 @@ export interface Request {
   scheduledDate: string | null;
   assignedCrew: string | null;
   assignedResources: string[] | null;
+  
 }
 
 export interface Stats {

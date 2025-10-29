@@ -40,7 +40,7 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
     private String obtenerToken() {
         Map<String, String> body = Map.of(
-                "email", usuario,
+                "userName", usuario, // ✅ corregido: el campo es "userName", no "email"
                 "password", password
         );
 
@@ -51,12 +51,19 @@ public class FinanzasRestAdapter implements PortalFinanzas {
 
         ResponseEntity<Map> response = restTemplate.postForEntity(loginUrl, entity, Map.class);
 
-        if (response.getBody() == null || !response.getBody().containsKey("token")) {
+        if (response.getBody() == null || !response.getBody().containsKey("data")) {
             throw new IllegalStateException("No se pudo obtener el token de Finanzas");
         }
 
-        return response.getBody().get("token").toString();
+        Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
+
+        if (!data.containsKey("token")) {
+            throw new IllegalStateException("La respuesta de Finanzas no contiene token");
+        }
+
+        return data.get("token").toString();
     }
+
 
     @Override
     public SolicitudFinanciamientoResponse solicitarFinanciamiento(SolicitudFinanciamientoRequest request) {

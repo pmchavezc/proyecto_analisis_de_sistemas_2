@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { financiamientoService, type FinancingRequestPayload } from '../api/financiamientoService';
-import { useRequestById } from '../hooks/useRequestById';
-import Layout from '../components/Layout';
-import RequestDetailsCard from '../components/RequestDetailsCard';
-import LoadingState from '../components/LoadingState';
+import {
+  financiamientoService,
+  type FinancingRequestPayload,
+} from "../api/financiamientoService";
+import { useRequestById } from "../hooks/useRequestById";
+import Layout from "../components/Layout";
+import RequestDetailsCard from "../components/RequestDetailsCard";
+import LoadingState from "../components/LoadingState";
 import { DollarSign, ArrowLeft } from "lucide-react";
-import { toastPromise, showWarningToast, showErrorToast } from '../utils/toast';
+import { toastPromise, showWarningToast, showErrorToast } from "../utils/toast";
 
 const SolicitarFinanciamiento: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,12 +17,16 @@ const SolicitarFinanciamiento: React.FC = () => {
 
   const solicitudId = Number(id);
 
-  // Hook para cargar los detalles de la solicitud
-  const { request, loading: loadingRequest, error: errorRequest } = useRequestById(solicitudId);
+  // Hook para cargar los detalles de   la solicitud
+  const {
+    request,
+    loading: loadingRequest,
+    error: errorRequest,
+  } = useRequestById(solicitudId);
 
   const today = new Date().toISOString().slice(0, 10);
-  const [montoEstimado, setMontoEstimado] = useState('');
-  const [email, setEmail] = useState('');
+  const [montoEstimado, setMontoEstimado] = useState("");
+  const [email, setEmail] = useState("");
   const [requestDate, setRequestDate] = useState(today);
   const [submitting, setSubmitting] = useState(false);
   const [montoError, setMontoError] = useState(false);
@@ -76,7 +83,7 @@ const SolicitarFinanciamiento: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Validación: Monto debe ser numérico y mayor a 0
     const monto = parseFloat(montoEstimado);
     if (!montoEstimado || isNaN(monto) || monto <= 0) {
@@ -101,10 +108,14 @@ const SolicitarFinanciamiento: React.FC = () => {
 
     try {
       // Mapear prioridad a ID (ajustar según tu backend)
-      const priorityMap: Record<string, number> = { 'ALTA': 1, 'MEDIA': 2, 'BAJA': 3 };
-      
+      const priorityMap: Record<string, number> = {
+        ALTA: 1,
+        MEDIA: 2,
+        BAJA: 3,
+      };
+
       let priorityId: number;
-      if (typeof request.priority === 'number') {
+      if (typeof request.priority === "number") {
         priorityId = request.priority;
       } else {
         priorityId = priorityMap[request.priority as string] || 0;
@@ -113,30 +124,33 @@ const SolicitarFinanciamiento: React.FC = () => {
       const payload: FinancingRequestPayload = {
         originId: 1, // ID fijo que mapea el sistema de Mantenimiento Urbano en el sistema de Financiamiento
         requestAmount: parseFloat(montoEstimado),
-        name: 'MANTENIMIENTO_URBANO',
+        name: "MANTENIMIENTO_URBANO",
         reason: request.description,
         requestDate: requestDate,
         email: email || undefined,
         priorityId,
       };
 
-      console.log('Payload de financiamiento:', payload);
-      console.log('ID de solicitud en ruta:', solicitudId);
-      
+      console.log("Payload de financiamiento:", payload);
+      console.log("ID de solicitud en ruta:", solicitudId);
+
       // Usar toastPromise para manejar el estado de la petición
       await toastPromise(
-        financiamientoService.solicitarFinanciamientoAdvanced(solicitudId, payload),
+        financiamientoService.solicitarFinanciamientoAdvanced(
+          solicitudId,
+          payload
+        ),
         {
-          loading: '⏳ Enviando solicitud de financiamiento...',
-          success: '✓ Solicitud de financiamiento enviada exitosamente',
-          error: '✗ No se pudo enviar la solicitud de financiamiento',
+          loading: "⏳ Enviando solicitud de financiamiento...",
+          success: "✓ Solicitud de financiamiento enviada exitosamente",
+          error: "✗ No se pudo enviar la solicitud de financiamiento",
         }
       );
-      
+
       // Navegar después de éxito
-      setTimeout(() => navigate('/solicitudes'), 1000);
+      setTimeout(() => navigate("/solicitudes"), 1000);
     } catch (err) {
-      console.error('Error al solicitar financiamiento:', err);
+      console.error("Error al solicitar financiamiento:", err);
       // El toast ya maneja el error, no necesitamos setError
     } finally {
       setSubmitting(false);
@@ -198,9 +212,9 @@ const SolicitarFinanciamiento: React.FC = () => {
                       onChange={(e) => handleMontoChange(e.target.value)}
                       onBlur={handleMontoBlur}
                       className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition ${
-                        montoError 
-                          ? 'border-red-300 focus:ring-red-500' 
-                          : 'border-gray-300 focus:ring-green-500'
+                        montoError
+                          ? "border-red-300 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-green-500"
                       }`}
                       placeholder="Ingresa el monto en quetzales"
                       min={0.01}
@@ -240,9 +254,9 @@ const SolicitarFinanciamiento: React.FC = () => {
                       onChange={(e) => handleEmailChange(e.target.value)}
                       onBlur={handleEmailBlur}
                       className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition ${
-                        emailError 
-                          ? 'border-red-300 focus:ring-red-500' 
-                          : 'border-gray-300 focus:ring-green-500'
+                        emailError
+                          ? "border-red-300 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-green-500"
                       }`}
                       placeholder="operador@municipio.com"
                       disabled={submitting}
@@ -269,7 +283,7 @@ const SolicitarFinanciamiento: React.FC = () => {
                       className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed transition"
                       disabled={submitting}
                     >
-                      {submitting ? 'Enviando...' : 'Solicitar Financiamiento'}
+                      {submitting ? "Enviando..." : "Solicitar Financiamiento"}
                     </button>
                   </div>
                 </form>
