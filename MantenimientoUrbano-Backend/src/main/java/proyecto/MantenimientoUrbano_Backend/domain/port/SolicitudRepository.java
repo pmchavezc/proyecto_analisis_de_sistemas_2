@@ -12,5 +12,4 @@ public interface SolicitudRepository {
     List<SolicitudMantenimiento> findPendientesOrdenadas();
     List<SolicitudMantenimiento> findTodasOrdenadas();
     void actualizarEstadoFinanciero(Long idSolicitud, EstadoFinanciamiento estado, Long idFinanciamiento);
-
 }
